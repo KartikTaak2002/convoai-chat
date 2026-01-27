@@ -1,27 +1,22 @@
-
-import {StyleSheet, Text} from 'react-native';
+import React, { useRef, useState } from 'react';
 import {
-  SafeAreaProvider,
-} from 'react-native-safe-area-context';
+  StatusBar,
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+} from 'react-native';
+import './global.css';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-function App() {
+export default function App() {
+
   return (
     <SafeAreaProvider>
-     <Text>Hi</Text>
-     <Text>Hi</Text>
-     <Text>Hi</Text>
-     <Text>Hi</Text>
-     <Text>Hi</Text>
-     <Text>Hi</Text>
     </SafeAreaProvider>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
