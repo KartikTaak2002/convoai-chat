@@ -9,7 +9,9 @@ enableScreens();
 
 const App = () => {
   return (
-        <RootNavigator />
+        <SafeAreaProvider >
+          <RootNavigator />
+        </SafeAreaProvider>
   );
 }
 
