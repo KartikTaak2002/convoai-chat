@@ -1,13 +1,10 @@
 
-import {StyleSheet, Text, useColorScheme} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
     <SafeAreaProvider>
      <Text>Hi</Text>
