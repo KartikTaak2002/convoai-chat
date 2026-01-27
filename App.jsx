@@ -6,9 +6,9 @@ import './global.css';
 
 const App = () => {
   return (
-    // <SafeAreaProvider>
-      <RootNavigator />
-    // </SafeAreaProvider>
+    <SafeAreaProvider>
+      <StatusBar barStyle="dark-content" />
+    </SafeAreaProvider>
   );
 }
 
