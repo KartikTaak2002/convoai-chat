@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
    setIsAuthenticated(user?true:false);
     },1500)
   },[])
-  const login = async(email,password) => {
+  const login = async(email,prassword) => {
     try{
     setIsAuthenticated(true);
     setUser("Dummy User");
