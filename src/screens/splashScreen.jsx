@@ -5,7 +5,7 @@ const SplashScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>ConvoAI</Text>
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color="#4f46e5" />
     </View>
   );
 };
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: '#4f46e5',
   },
 });
 

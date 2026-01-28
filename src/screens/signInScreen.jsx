@@ -1,25 +1,100 @@
-import { View, Text, StatusBar, Image } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TextInput, TouchableOpacity, Pressable, Alert, StatusBar } from 'react-native'
+import React, { useRef, useState } from 'react'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import Loading from '../component/Loading';
+import CustomKeyboardView from '../component/CustomKeyboardView';
+import { useAuth } from '../store/authContext';
+
 const SignInScreen = () => {
+    const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
+    const {login} = useAuth();
+
+    const emailRef = useRef("");
+    const passwordRef = useRef("");
+
+    const handleLogin = async ()=>{
+        if(!emailRef.current || !passwordRef.current){
+            Alert.alert('Sign In', "Please fill all the fields!");
+            return;
+        }
+
+        setLoading(true);
+        const response = await login(emailRef.current, passwordRef.current);
+        setLoading(false);
+        console.log('sign in response: ', response);
+        if(!response.success){
+            Alert.alert('Sign In', response.msg);
+        }
+    }
   return (
-    <View className='flex-1'>
-      <StatusBar barStyle="dark" />
-      <View className='flex-1 gap-12' style={{paddingHorizontal:wp(5), paddingTop:hp(8)}}>
-        <View className='items-center'>
-          <Image style={{height:hp(25)}} resizeMode='contain' source={require('../../assets/images/login.png')} />
-
-        </View>
-        <View className='gap-1'>
-          <Text className='tracking-wider text-center font-bold text-neutral-800' style={{fontSize:hp(4)}}>Sign In</Text>
-          <View style={{height:hp(7)}} className='flex-row gap-4 px-4'>
-
-          </View>
+    <CustomKeyboardView>
+      <StatusBar barStyle="dark-content" />
+      <View style={{paddingTop: hp(8), paddingHorizontal: wp(5)}} className="flex-1 gap-12">
+        {/* signIn image */}
+        <View className="items-center">
+            <Image style={{height: hp(25)}} resizeMode='contain' source={require('../../assets/images/login.png')} />
         </View>
 
+        <View className="gap-10">
+            <Text style={{fontSize: hp(4)}} className="font-bold tracking-wider text-center text-neutral-800">Sign In</Text>
+            {/* inputs */}
+            <View className="gap-4">
+                <View style={{height: hp(7)}} className="flex-row gap-4 px-4 bg-neutral-100 items-center rounded-xl">
+                    <MaterialCommunityIcons name="email" size={hp(2.7)} color="gray" />
+                    <TextInput
+                        onChangeText={value=> emailRef.current=value}
+                        style={{fontSize: hp(2)}}
+                        className="flex-1 font-semibold text-neutral-700"
+                        placeholder='Email address'
+                        placeholderTextColor={'gray'}
+                    />
+                </View>
+                <View className="gap-3">
+                    <View style={{height: hp(7)}} className="flex-row gap-4 px-4 bg-neutral-100 items-center rounded-xl">
+                        <MaterialCommunityIcons name="lock" size={hp(2.7)} color="gray" />
+                        <TextInput
+                            onChangeText={value=> passwordRef.current=value}
+                            style={{fontSize: hp(2)}}
+                            className="flex-1 font-semibold text-neutral-700"
+                            placeholder='Password'
+                            secureTextEntry
+                            placeholderTextColor={'gray'}
+                        />
+                    </View>
+                    <Text style={{fontSize: hp(1.8)}} className="font-semibold text-right text-neutral-500">Forgot password?</Text>
+                </View>
+
+                {/* submit button */}
+                <View>
+                    {
+                        loading? (
+                            <View className="flex-row justify-center">
+                                <Loading size={hp(6.5)} />
+                            </View>
+                        ):(
+                            <TouchableOpacity onPress={handleLogin} style={{height: hp(6.5)}} className="bg-indigo-500 rounded-xl justify-center items-center">
+                                <Text style={{fontSize: hp(2.7)}} className="text-white font-bold tracking-wider">
+                                    Sign In
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                </View>
+
+                {/* sign up text */}
+                <View className="flex-row justify-center">
+                    <Text style={{fontSize: hp(1.8)}} className="font-semibold text-neutral-500">Don't have an account? </Text>
+                    <Pressable onPress={()=> navigation.navigate('SignUp')}>
+                        <Text style={{fontSize: hp(1.8)}} className="font-bold text-indigo-500">Sign Up</Text>
+                    </Pressable>
+                </View>
+            </View>
+        </View>
       </View>
-
-    </View>
+    </CustomKeyboardView>
   )
 }
 
