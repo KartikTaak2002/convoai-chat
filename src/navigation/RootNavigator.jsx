@@ -5,13 +5,11 @@ import AppStack from './AppStack';
 import { AuthContextProvider, useAuth } from '../store/authContext';
 import SplashScreen from '../screens/splashScreen';
 
-const RootNavigatorContent = () => {
-  const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated === undefined) {
+const RootNavigator = () => {
+    const { isAuthenticated } = useAuth();
+   if (isAuthenticated === undefined) {
     return <SplashScreen />;
   }
-
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -21,12 +19,23 @@ const RootNavigatorContent = () => {
   );
 };
 
-const RootNavigator = () => {
-  return (
-    <AuthContextProvider>
-      <RootNavigatorContent />
-    </AuthContextProvider>
-  );
-};
-
 export default RootNavigator;
+
+//   return (
+//     <SafeAreaProvider>
+//       <NavigationContainer>
+//         {isAuthenticated ? <AppStack /> : <AuthStack />}
+//       </NavigationContainer>
+//     </SafeAreaProvider>
+//   );
+// };
+
+// const RootNavigator = () => {
+//   return (
+//     <AuthContextProvider>
+//       <RootNavigatorContent />
+//     </AuthContextProvider>
+//   );
+// };
+
+// export default RootNavigator;

@@ -19,7 +19,6 @@ export default function HomeScreen() {
     },[user])
 
     const getUsers = async ()=>{
-        // fetch users
         const q = query(usersRef, where('userId', '!=', user?.uid));
         const querySnapshot = await getDocs(q);
         let data = [];
