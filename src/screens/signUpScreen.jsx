@@ -15,22 +15,53 @@ const SignUpScreen = ({ navigation }) => {
     const usernameRef = useRef("");
     const profileRef = useRef("");
 
-    const handleRegister = async ()=>{
-        if(!emailRef.current || !passwordRef.current || !usernameRef.current || !profileRef.current){
-            Alert.alert('Sign Up', "Please fill all the fields!");
-            return;
-        }
-        setLoading(true);
+    // const handleRegister = async ()=>{
+    // console.log(emailRef, passwordRef, usernameRef, profileRef,'skdksksdofjis');
 
-        let response = await register(emailRef.current, passwordRef.current, usernameRef.current, profileRef.current);
-        setLoading(false);
+    //     if(!emailRef.current || !passwordRef.current || !usernameRef.current || !profileRef.current){
+    //         Alert.alert('Sign Up', "Please fill all the fields!");
+    //         return;
+    //     }
+    //     setLoading(true);
 
-        console.log('got result: ', response);
-        if(!response.success){
-            Alert.alert('Sign Up', response.msg);
-        }
+    //     let response = await register(emailRef.current, passwordRef.current, usernameRef.current, profileRef.current);
+    //     setLoading(false);
+
+    //     console.log('got result:ss ', JSON.stringify(response,null,2));
+    //     if(!response.success){
+    //         Alert.alert('Sign Up', response.msg);
+    //     }
+    // }
+const handleRegister = async () => {
+    const email    = (emailRef.current    || '').trim();
+    const password = (passwordRef.current || '').trim();
+    const username = (usernameRef.current || '').trim();
+    const profile  = (profileRef.current  || '').trim();
+
+    console.log('→ Sending to register:', { email, password: password ? '***' : '(empty)', username, profile });
+
+    if (!email || !password || !username) {
+        Alert.alert('Sign Up', 'Please fill all required fields (username, email, password)');
+        return;
     }
 
+    if (!email.includes('@') || password.length < 6) {
+        Alert.alert('Sign Up', 'Please enter a valid email and password (min 6 chars)');
+        return;
+    }
+
+    setLoading(true);
+
+    const response = await register(email, password, username, profile);
+
+    setLoading(false);
+
+    if (!response.success) {
+        Alert.alert('Sign Up', response.msg || 'Registration failed');
+    } else {
+        Alert.alert('Success', 'Account created!');
+    }
+};
   return (
     <CustomKeyboardView>
       <StatusBar barStyle="dark-content" />

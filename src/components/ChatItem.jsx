@@ -10,9 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 export default function ChatItem({item, noBorder, currentUser}) {
     const [lastMessage, setLastMessage] = useState(undefined);
     const navigation = useNavigation();
-    
+    // console.log('chat item user:', JSON.stringify(currentUser,null,2));
     useEffect(()=>{
-        let roomId = getRoomId(currentUser?.userId, item?.userId);
+        let roomId = getRoomId(currentUser?.uid, item?.userId);
         const docRef = doc(db, "rooms", roomId);
         const messagesRef = collection(docRef, "messages");
         const q = query(messagesRef, orderBy('createdAt', 'desc'));
@@ -34,10 +34,11 @@ export default function ChatItem({item, noBorder, currentUser}) {
         }
     }
 
+    console.log('last message:', JSON.stringify(lastMessage,null,2));
     const renderLastMessage = ()=>{
         if(typeof lastMessage == 'undefined') return 'Loading...';
         if(lastMessage){
-            if(currentUser?.userId == lastMessage?.userId) return "You: "+lastMessage?.text;
+            if(currentUser?.uid == lastMessage?.userId) return "You: "+lastMessage?.text;
             return lastMessage?.text;
         }else{
             return 'Say Hi 👋';
