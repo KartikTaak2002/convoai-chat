@@ -42,8 +42,8 @@ export default function ChatRoomScreen({navigation}) {
     useEffect(()=>{
         createRoomIfNotExists();
 
-        if(user?.uid && item?.userId) {
-            let roomId = getRoomId(user?.uid, item?.userId);
+        if(user?.userId || user?.uid && item?.userId) {
+            let roomId = getRoomId(user?.userId, item?.userId);
             const docRef = doc(db, "rooms", roomId);
             const messagesRef = collection(docRef, "messages");
             const q = query(messagesRef, orderBy('createdAt', 'asc'));
@@ -64,7 +64,7 @@ export default function ChatRoomScreen({navigation}) {
                 KeyboardDidShowListener.remove();
             }
         }
-    },[user?.uid, item?.userId]);
+    },[user?.userId, item?.userId]);
 
     useEffect(()=>{
         updateScrollView();
@@ -77,8 +77,8 @@ export default function ChatRoomScreen({navigation}) {
     }
 
     const createRoomIfNotExists = async ()=>{
-        if(user?.uid && item?.userId) {
-            let roomId = getRoomId(user?.uid, item?.userId);
+        if(user?.userId  && item?.userId) {
+            let roomId = getRoomId(user?.userId, item?.userId);
             await setDoc(doc(db, "rooms", roomId), {
                roomId,
                createdAt: Timestamp.fromDate(new Date()) 
@@ -90,17 +90,17 @@ export default function ChatRoomScreen({navigation}) {
         let message = textRef.current.trim();
         if(!message) return;
         try{
-            let roomId = getRoomId(user?.uid, item?.userId);
+            let roomId = getRoomId(user?.userId || user?.uid, item?.userId);
             const docRef = doc(db, 'rooms', roomId);
             const messagesRef = collection(docRef, "messages");
             textRef.current = "";
             if(inputRef) inputRef?.current?.clear();
-            
+            { console.log('sending message: ', user);}
             const newDoc = await addDoc(messagesRef, {
-                userId: user?.uid,
+                userId: user?.userId || user?.userId || user?.uid,
                 text: message,
-                profileUrl: user?.providerData?.photoURL || "",
-                senderName: user?.providerData?.displayName || "Unknown",
+                profileUrl: user?.profileUrl ||  user?.providerData?.photoURL || "",
+                senderName: user?.username || user?.providerData?.displayName || "Unknown",
                 createdAt: Timestamp.fromDate(new Date())
             });
 

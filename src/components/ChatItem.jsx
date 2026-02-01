@@ -12,7 +12,7 @@ export default function ChatItem({item, noBorder, currentUser}) {
     const navigation = useNavigation();
     // console.log('chat item user:', JSON.stringify(currentUser,null,2));
     useEffect(()=>{
-        let roomId = getRoomId(currentUser?.uid, item?.userId);
+        let roomId = getRoomId(currentUser?.userId || currentUser?.uid, item?.userId);
         const docRef = doc(db, "rooms", roomId);
         const messagesRef = collection(docRef, "messages");
         const q = query(messagesRef, orderBy('createdAt', 'desc'));
@@ -26,7 +26,6 @@ export default function ChatItem({item, noBorder, currentUser}) {
 
         return unsub;
     },[]);
-
     const renderTime = ()=>{
         if(lastMessage){
             let date = lastMessage?.createdAt;
@@ -38,7 +37,7 @@ export default function ChatItem({item, noBorder, currentUser}) {
     const renderLastMessage = ()=>{
         if(typeof lastMessage == 'undefined') return 'Loading...';
         if(lastMessage){
-            if(currentUser?.uid == lastMessage?.userId) return "You: "+lastMessage?.text;
+            if(currentUser?.userId == lastMessage?.userId) return "You: "+lastMessage?.text;
             return lastMessage?.text;
         }else{
             return 'Say Hi 👋';

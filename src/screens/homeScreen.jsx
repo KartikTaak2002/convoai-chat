@@ -14,12 +14,12 @@ export default function HomeScreen() {
     const [users, setUsers] = useState([]);
 
     useEffect(()=>{
-        if(user?.uid)
+        if(user?.userId || user?.uid)
             getUsers();
     },[user])
 
     const getUsers = async ()=>{
-        const q = query(usersRef, where('userId', '!=', user?.uid));
+        const q = query(usersRef, where('userId', '!=' ,  user?.userId || user?.uid));
         const querySnapshot = await getDocs(q);
         let data = [];
         querySnapshot.forEach(doc=>{

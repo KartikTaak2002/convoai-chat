@@ -90,7 +90,7 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
               <Text style={{ fontSize: hp(1.85) }} className="text-neutral-600 break-all font-medium">
-                {user?.uid || user?.userId || 'Not available'}
+                {user?.userId || 'Not available'}
               </Text>
             </View>
 

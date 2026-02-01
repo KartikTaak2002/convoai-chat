@@ -15,23 +15,6 @@ const SignUpScreen = ({ navigation }) => {
     const usernameRef = useRef("");
     const profileRef = useRef("");
 
-    // const handleRegister = async ()=>{
-    // console.log(emailRef, passwordRef, usernameRef, profileRef,'skdksksdofjis');
-
-    //     if(!emailRef.current || !passwordRef.current || !usernameRef.current || !profileRef.current){
-    //         Alert.alert('Sign Up', "Please fill all the fields!");
-    //         return;
-    //     }
-    //     setLoading(true);
-
-    //     let response = await register(emailRef.current, passwordRef.current, usernameRef.current, profileRef.current);
-    //     setLoading(false);
-
-    //     console.log('got result:ss ', JSON.stringify(response,null,2));
-    //     if(!response.success){
-    //         Alert.alert('Sign Up', response.msg);
-    //     }
-    // }
 const handleRegister = async () => {
     const email    = (emailRef.current    || '').trim();
     const password = (passwordRef.current || '').trim();
